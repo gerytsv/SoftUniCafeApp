@@ -38,6 +38,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         btnSignIn = (Button) findViewById(R.id.sign_in_btn);
         textViewRegistration = (TextView) findViewById(R.id.register_textView);
 
+        textViewRegistration.setOnClickListener(this);
+
 
     }
 
@@ -65,9 +67,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         if (v.getId() == R.id.register_textView) {
 
             /// Create Intent for SignUpActivity and Start The Activity
-            Intent intentSignUP = new Intent(getApplicationContext(), RegisterActivity.class);
+            Intent intentSignUP = new Intent(this, RegisterActivity.class);
             startActivity(intentSignUP);
-            finish();
         }
     }
 }
