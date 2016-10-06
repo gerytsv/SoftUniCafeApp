@@ -1,6 +1,5 @@
 package com.example.android.softunicafeapp.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,8 +19,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     DBAdapter DBAdapter;
     Button btnRegister;
     TextView textViewLogin;
-    Context context = this;
-    //SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +26,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_register);
 
         // getting Instance of the database adapter
-        DBAdapter = new DBAdapter(context);
+        DBAdapter = new DBAdapter(this);
+        DBAdapter = DBAdapter.open();
 
         editTextUserName = (EditText) findViewById(R.id.editText_name);
         editTextUserSurName = (EditText) findViewById(R.id.editText_surName);
@@ -73,6 +71,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             Intent intentSignUP = new Intent(this, LoginActivity.class);
             startActivity(intentSignUP);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        // TODO Auto-generated method stub
+        super.onDestroy();
+
+        DBAdapter.close();
     }
 }
 

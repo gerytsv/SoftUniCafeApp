@@ -31,13 +31,13 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         editTextEmail = (EditText) findViewById(R.id.email);
         editTextPassword = (EditText) findViewById(R.id.password);
 
-        // create a instance of SQLite Database
-        DBAdapter = new DBAdapter(this);
-
         // Get The Reference Of the Buttons
         btnSignIn = (Button) findViewById(R.id.sign_in_btn);
         textViewRegistration = (TextView) findViewById(R.id.register_textView);
 
+        // create a instance of SQLite Database
+        DBAdapter = new DBAdapter(this);  // app CRASHES db = null ?!?
+        DBAdapter = DBAdapter.open();
         textViewRegistration.setOnClickListener(this);
 
 
@@ -71,15 +71,15 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             startActivity(intentSignUP);
         }
     }
-}
 
 
-    /*@Override
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         // Close The Database
         DBAdapter.close();
-    }*/
+    }
+}
 
 
 

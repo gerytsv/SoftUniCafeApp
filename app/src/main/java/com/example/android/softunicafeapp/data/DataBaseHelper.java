@@ -8,6 +8,7 @@ import android.util.Log;
 import com.example.android.softunicafeapp.adapters.DBAdapter;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
+
     public DataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory,
                           int version) {
         super(context, name, factory, version);
