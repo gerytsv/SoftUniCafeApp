@@ -2,10 +2,12 @@ package com.example.android.softunicafeapp.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -89,8 +91,13 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 }
             });
         }
+    }
 
-
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        Window window = getWindow();
+        window.setFormat(PixelFormat.RGBA_8888);
     }
 
     //new code ends here
