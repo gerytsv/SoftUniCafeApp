@@ -67,8 +67,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if (password.equals("")) editTextUserPassword.setError(getString(error_field_required));
         if (surName.equals("")) editTextUserSurName.setError(getString(error_field_required));
         if (name.equals("")) editTextUserName.setError(getString(error_field_required));
+        if (password.equals("")) editTextUserName.setError(getString(error_field_required));
 
-        if (password.length() < 4) {
+        if (!password.equals("") && password.length() < 4) {
             editTextUserPassword.setError(getString(error_invalid_password));
         } else {
             //inserting the data in the database

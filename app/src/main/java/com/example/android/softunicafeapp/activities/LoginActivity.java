@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.example.android.softunicafeapp.R;
 import com.example.android.softunicafeapp.adapters.DBAdapter;
 
+import static com.example.android.softunicafeapp.R.id.email;
+
 /**
  * A login screen that offers login via email and password.
  */
@@ -29,7 +31,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.activity_login);
 
         // get the References of views
-        userEmail = (AutoCompleteTextView) findViewById(R.id.email);
+        userEmail = (AutoCompleteTextView) findViewById(email);
         editTextPassword = (EditText) findViewById(R.id.password);
 
         db = new DBAdapter(LoginActivity.this);
@@ -44,22 +46,30 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     }
 
     public void onSignInClick(View v) {
-
-
+        String errorMsgEmail = "Please, insert your email first.";
+        String errorMsgPass = "Please, insert your password first.";
+        // Reset errors.
+        userEmail.setError(null);
+        editTextPassword.setError(null);
         String email = userEmail.getText().toString();
         String password = editTextPassword.getText().toString();
-        String storedPassword = db.getLoginPass(password);
-        String storedEmail = db.getLoginEmail(email);
-        if (!password.equals("") && !email.equals("")) {
-            if (password.equals(storedPassword) && email.equals(storedEmail)) {
-                //this intent loads the main(Categories') screen
-                Intent intent = new Intent(getApplicationContext(), CategoriesActivity.class);
-                intent.putExtra("Email", email); // idk for what?
-                startActivity(intent);
-                finish();
-            } else
-                Toast.makeText(LoginActivity.this, "Email or Password does not match", Toast.LENGTH_LONG).show();
+        if (!db.getLoginEmail(email).equals(errorMsgEmail) && !db.getLoginPass(password).equals(errorMsgPass)) {
+            String storedPassword = db.getLoginPass(password);
+            String storedEmail = db.getLoginEmail(email);
+
+            if (!password.equals("") && !email.equals("")) {
+                if (password.equals(storedPassword) && email.equals(storedEmail)) {
+                    //this intent loads the main(Categories') screen
+                    Intent intent = new Intent(getApplicationContext(), CategoriesActivity.class);
+                    intent.putExtra("Email", email); // idk for what?
+                    startActivity(intent);
+                    finish();
+                } else
+                    Toast.makeText(LoginActivity.this, "Email or Password does not match", Toast.LENGTH_LONG).show();
+            }
         }
+        if (db.getLoginEmail(email).equals(errorMsgEmail)) userEmail.setError(errorMsgEmail);
+        if (db.getLoginPass(password).equals(errorMsgPass)) editTextPassword.setError(errorMsgPass);
         if (email.equals("")) userEmail.setError("Insert email");
         if (password.equals("")) editTextPassword.setError("Insert password");
 
@@ -77,5 +87,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             finish();
         }
     }
+
 
 }

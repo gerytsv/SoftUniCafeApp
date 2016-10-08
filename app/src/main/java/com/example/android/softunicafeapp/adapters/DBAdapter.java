@@ -75,47 +75,64 @@ public class DBAdapter {
     }
 
     public String getLoginPass(String insertedPass) {
+        String errorMsgPass;
+        String errorMissingData = get();
+        if (!insertedPass.equals("")) {
+            if (!errorMissingData.equals("")) {
+                h = new helper(c);
+                db = h.getReadableDatabase();
+                String password = "";
+                String[] col = {COLUMN_ID, COLUMN_NAME, COLUMN_SURNAME, COLUMN_EMAIL, COLUMN_PHONE, COLUMN_PASSWORD};
+                Cursor c = db.query(TABLE_NAME, col, null, null, null, null, null);    //fetching data from database
 
-        h = new helper(c);
-        db = h.getReadableDatabase();
-        String password = "";
-        String[] col = {COLUMN_ID, COLUMN_NAME, COLUMN_SURNAME, COLUMN_EMAIL, COLUMN_PHONE, COLUMN_PASSWORD};
-        Cursor c = db.query(TABLE_NAME, col, null, null, null, null, null);    //fetching data from database
+                c.moveToFirst();
+                do {
+                    if (insertedPass.equals(c.getString(5))) {
+                        password = c.getString(5);
+                        c.close();
+                        return password;
+                    } else c.moveToNext();
+                }
+                while (!c.isAfterLast());
 
-        c.moveToFirst();
-        do {
-            if (insertedPass.equals(c.getString(5))) {
-                password = c.getString(5);
                 c.close();
                 return password;
-            } else c.moveToNext();
+            } else {
+                errorMsgPass = "Please, register first.";
+                return errorMsgPass;
+            }
+        } else {
+            errorMsgPass = "Please, insert your password first.";
+            return errorMsgPass;
         }
-        while (!c.isAfterLast());
 
-        c.close();
-        return password;
     }
 
     public String getLoginEmail(String insertedEmail) {
+        String errorMsgEmail;
+        if (!insertedEmail.equals("")) {
+            h = new helper(c);
+            db = h.getReadableDatabase();
+            String email = "";
+            String[] col = {COLUMN_ID, COLUMN_NAME, COLUMN_SURNAME, COLUMN_EMAIL, COLUMN_PHONE, COLUMN_PASSWORD};
+            Cursor c = db.query(TABLE_NAME, col, null, null, null, null, null);    //fetching data from database
 
-        h = new helper(c);
-        db = h.getReadableDatabase();
-        String email = "";
-        String[] col = {COLUMN_ID, COLUMN_NAME, COLUMN_SURNAME, COLUMN_EMAIL, COLUMN_PHONE, COLUMN_PASSWORD};
-        Cursor c = db.query(TABLE_NAME, col, null, null, null, null, null);    //fetching data from database
+            c.moveToFirst();
+            do {
+                if (insertedEmail.equals(c.getString(3))) {
+                    email = c.getString(3);
+                    c.close();
+                    return email;
+                } else c.moveToNext();
+            }
+            while (!c.isAfterLast());
 
-        c.moveToFirst();
-        do {
-            if (insertedEmail.equals(c.getString(3))) {
-                email = c.getString(3);
-                c.close();
-                return email;
-            } else c.moveToNext();
+            c.close();
+            return email;
+        } else {
+            errorMsgEmail = "Please, insert your email first.";
+            return errorMsgEmail;
         }
-        while (!c.isAfterLast());
-
-        c.close();
-        return email;
     }
 
 
