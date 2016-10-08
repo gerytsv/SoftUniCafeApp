@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "716412248022",
+    "firebase_url": "https://cafe-22cef.firebaseio.com",
+    "project_id": "cafe-22cef",
+    "storage_bucket": "cafe-22cef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:716412248022:android:bc3fe103e8555c6c",
+        "android_client_info": {
+          "package_name": "com.example.android.softunicafeapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "716412248022-c6t5414upa61534lesc6f1qt6q0dsmte.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.android.softunicafeapp",
+            "certificate_hash": "BEDE6BC5FB67213F91728C2A2CA71EDB88924763"
+          }
+        },
+        {
+          "client_id": "716412248022-qhbam29a4judd6h4g06o4b6vpsbrh1ia.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_SQNW55LdTpJvunM7Vh59DK7YJtTKZts"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "716412248022-qhbam29a4judd6h4g06o4b6vpsbrh1ia.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
