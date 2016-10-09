@@ -2,6 +2,7 @@ package com.example.android.softunicafeapp.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 
 import com.example.android.softunicafeapp.R;
 
@@ -12,4 +13,5 @@ public class OrdersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders);
     }
+
 }

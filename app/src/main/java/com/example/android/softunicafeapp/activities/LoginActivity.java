@@ -1,6 +1,7 @@
 package com.example.android.softunicafeapp.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     EditText editTextPassword;
     AutoCompleteTextView userEmail;
     DBAdapter db;
+    ProgressDialog mProgressDialog;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -39,6 +41,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -64,7 +67,9 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         textViewRegistration = (TextView) findViewById(R.id.register_textView);
 
         textViewRegistration.setOnClickListener(this);
-
+        //setting custom font
+        //Typeface myCustomFont = Typeface.createFromAsset(getAssets(), "fonts/hotpizza.ttf");
+        //btnSignIn.setTypeface(myCustomFont);
 
     }
 
@@ -77,6 +82,9 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     public void onSignInClick(View v) {
         String email = userEmail.getText().toString();
         String password = editTextPassword.getText().toString();
+
+        mProgressDialog.setMessage("Signing in...");
+        mProgressDialog.show();
 
         //new
         if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
