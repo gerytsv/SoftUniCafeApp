@@ -18,7 +18,6 @@ public class CategoriesActivity extends AppCompatActivity implements View.OnClic
     private RecyclerView recView;
     private CategoriesAdapter adapter;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

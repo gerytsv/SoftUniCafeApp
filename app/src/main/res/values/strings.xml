@@ -13,7 +13,11 @@
     <string name="error_try_again">Try again</string>
     <string name="error_invalid_phone">Invalid phone number</string>
     <string name="title_activity_categories">CategoriesActivity</string>
+    <string name="title_activity_products">ProductsActivity</string>
     <string name="title_activity_orders">OrdersActivity</string>
+    <string name="title_activity_user_data">UserDataActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_register">RegisterActivity</string>
     <string name="confirm_registry">Email not found.</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>

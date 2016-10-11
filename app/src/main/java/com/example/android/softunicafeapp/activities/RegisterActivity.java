@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,13 +64,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if (!email.contains("@")) editTextUserEmail.setError(getString(error_invalid_email));
         //if to check if the phone number is more than or less that 10 symbols
         //if(!phone.length(10)) editTextUserPhone.setError(getString(error_invalid_phone)); --> Doesnt happen!
-        if (email.equals("")) editTextUserEmail.setError(getString(error_field_required));
-        if (password.equals("")) editTextUserPassword.setError(getString(error_field_required));
-        if (surName.equals("")) editTextUserSurName.setError(getString(error_field_required));
-        if (name.equals("")) editTextUserName.setError(getString(error_field_required));
-        if (password.equals("")) editTextUserName.setError(getString(error_field_required));
+        if (!TextUtils.isEmpty(email)) editTextUserEmail.setError(getString(error_field_required));
+        if (!TextUtils.isEmpty(password))
+            editTextUserPassword.setError(getString(error_field_required));
+        if (!TextUtils.isEmpty(surName))
+            editTextUserSurName.setError(getString(error_field_required));
+        if (!TextUtils.isEmpty(name)) editTextUserName.setError(getString(error_field_required));
 
-        if (!password.equals("") && password.length() < 4) {
+        if (TextUtils.isEmpty(password) && password.length() < 4) {
             editTextUserPassword.setError(getString(error_invalid_password));
         } else {
             //inserting the data in the database
