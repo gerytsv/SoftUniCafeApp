@@ -70,6 +70,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         String password = editTextUserPassword.getText().toString();
 
         final String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+        boolean isCorrect = false;
 
         /* Reset errors.
         editTextUserEmail.setError(null);
@@ -94,11 +95,20 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if (!TextUtils.isEmpty(password) && password.length() < 4)
             editTextUserPassword.setError(getString(error_invalid_password));
         else editTextUserPassword.setError(null);
-        //if (!isValidEmail(email) && !TextUtils.isEmpty(email)) editTextUserEmail.setError(getString(error_invalid_email));
+        if (!email.contains("@")) editTextUserEmail.setError(getString(error_invalid_email));
+        else editTextUserEmail.setError(null);
+        /*if (!isValidEmail(email) && !TextUtils.isEmpty(email)) editTextUserEmail.setError(getString(error_invalid_email));
 
         if (!email.matches(emailPattern) && !TextUtils.isEmpty(email))
             editTextUserEmail.setError(getString(error_invalid_email));
         else editTextUserEmail.setError(null);
+
+        isCorrect = emailPattern.matches(email);
+        if(isCorrect) {
+            editTextUserEmail.setError(null);
+        }
+            else { editTextUserEmail.setError(getString(error_invalid_email)); }
+        */
 
 
         if (!TextUtils.isEmpty(email) &&
@@ -107,7 +117,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 !TextUtils.isEmpty(surName) &&
                 !TextUtils.isEmpty(phone) &&
                 password.length() > 4 &&
-                email.matches(emailPattern)) { //isValidEmail(email)
+                email.contains("@")) { //isValidEmail(email)   ;   email.matches(emailPattern)
             mProgress.setMessage("Signing Up ...");
             mProgress.show();
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
