@@ -40,11 +40,16 @@
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:background="@drawable/layout_gradient_background"
             android:orientation="vertical"
-            android:padding="12dp">
+            android:padding="12dp"
+
+            >
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+
+                android:focusable="true"
+                android:focusableInTouchMode="true">
 
                 <!--Future task: make this autocomplete work and show dropdown list with emails-->
                 <AutoCompleteTextView
@@ -53,7 +58,10 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_email"
                     android:inputType="textEmailAddress"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+
+                    android:nextFocusLeft="@id/email"
+                    android:nextFocusUp="@id/email" />
 
             </android.support.design.widget.TextInputLayout>
 

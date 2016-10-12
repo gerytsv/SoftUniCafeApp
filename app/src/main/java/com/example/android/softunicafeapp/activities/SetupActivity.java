@@ -18,7 +18,7 @@ import com.google.firebase.storage.StorageReference;
 
 import static com.example.android.softunicafeapp.R.id.order_btn;
 
-public class UserDataActivity extends AppCompatActivity {
+public class SetupActivity extends AppCompatActivity {
 
     private EditText mName, mPhone, mNote;
     private Button mOrderBtn;
@@ -29,7 +29,7 @@ public class UserDataActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_data);
+        setContentView(R.layout.activity_setup);
 
         mStorage = FirebaseStorage.getInstance().getReference();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Orders");
@@ -77,7 +77,7 @@ public class UserDataActivity extends AppCompatActivity {
             // here we add the recycler view info a.k.a. the names of the items the user selected to purchase
             mProgress.dismiss();
             Toast.makeText(this, "Order sent.", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(UserDataActivity.this, CategoriesActivity.class));
+            startActivity(new Intent(SetupActivity.this, CategoriesActivity.class));
         } else {
             if (TextUtils.isEmpty(userName)) mName.setError("Please, complete this field!");
             if (TextUtils.isEmpty(userPhone)) mPhone.setError("Please, complete this field!");

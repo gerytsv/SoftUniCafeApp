@@ -6,6 +6,7 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.firebase.client.Firebase;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SoftUniCafeApp extends MultiDexApplication {
 
@@ -14,6 +15,8 @@ public class SoftUniCafeApp extends MultiDexApplication {
         super.onCreate();
 
         Firebase.setAndroidContext(this);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
     }
 
     @Override
@@ -21,4 +24,5 @@ public class SoftUniCafeApp extends MultiDexApplication {
         super.attachBaseContext(newBase);
         MultiDex.install(this);
     }
+
 }

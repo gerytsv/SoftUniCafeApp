@@ -41,18 +41,19 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     EditText mLoginPassword;
     AutoCompleteTextView mLoginEmail;
     //DBAdapter db;
-    ProgressDialog mProgressDialog;
+    ProgressDialog mProgress;
     private FirebaseAuth mAuth;
-    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabaseUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
         mAuth = FirebaseAuth.getInstance();
-
+        mProgress = new ProgressDialog(this);
+        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users");
+        mDatabaseUsers.keepSynced(true);
 
         // get the References of views
         mLoginEmail = (AutoCompleteTextView) findViewById(email);
@@ -75,20 +76,21 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         String email = mLoginEmail.getText().toString();
         String password = mLoginPassword.getText().toString();
 
-        //mProgressDialog.setMessage("Signing in...");
-        //mProgressDialog.show();
-
         if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
             Toast.makeText(LoginActivity.this, "Field vacant!", Toast.LENGTH_SHORT).show();
         } else {
+            mProgress.setMessage("Signing in...");
+            mProgress.show();
+
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
+                        mProgress.dismiss();
                         checkIfUserExists();
-                        //mProgressDialog.dismiss();
                     } else {
-                        Toast.makeText(LoginActivity.this, "Login error", Toast.LENGTH_SHORT).show();
+                        mProgress.dismiss();
+                        Toast.makeText(LoginActivity.this, "User not recognised. Please register.", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -97,7 +99,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
     private void checkIfUserExists() {
         final String user_id = mAuth.getCurrentUser().getUid();
-        mDatabase.addValueEventListener(new ValueEventListener() {
+        mDatabaseUsers.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -105,18 +107,19 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
                     Intent intent = new Intent(LoginActivity.this, CategoriesActivity.class);
                     startActivity(intent);
+
                 } else {
-                    Toast.makeText(LoginActivity.this, "Please, setup yoyr account.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "No user found matching your data. Please register!", Toast.LENGTH_SHORT).show();
+                    //Intent setupIntent = new Intent(LoginActivity.this, SetupActivity.class);
+                    //startActivity(setupIntent);
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
     }
-
 
     @Override
     protected void onStart() {
@@ -160,37 +163,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     }
 
 
-    /**
-
-        String errorMsgEmail = "Please, insert your email first.";
-        String errorMsgPass = "Please, insert your password first.";
-        // Reset errors.
-        userEmail.setError(null);
-        editTextPassword.setError(null);
-
-        if (!db.getLoginEmail(email).equals(errorMsgEmail) && !db.getLoginPass(password).equals(errorMsgPass)) {
-            String storedPassword = db.getLoginPass(password);
-            String storedEmail = db.getLoginEmail(email);
-
-            if (!password.equals("") && !email.equals("")) {
-                if (password.equals(storedPassword) && email.equals(storedEmail)) {
-                    //this intent loads the main(Categories') screen
-                    Intent intent = new Intent(getApplicationContext(), CategoriesActivity.class);
-                    intent.putExtra("Email", email); // idk for what?
-                    startActivity(intent);
-                    finish();
-                } else
-                    Toast.makeText(LoginActivity.this, "Email or Password does not match", Toast.LENGTH_LONG).show();
-            }
-        }
-        if (db.getLoginEmail(email).equals(errorMsgEmail)) userEmail.setError(errorMsgEmail);
-        if (db.getLoginPass(password).equals(errorMsgPass)) editTextPassword.setError(errorMsgPass);
-        if (email.equals("")) userEmail.setError("Insert email");
-        if (password.equals("")) editTextPassword.setError("Insert password");
-
-    }
-
-     **/
     @Override
     public void onClick(View v) {
 
@@ -199,10 +171,10 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             /// Create Intent for SignUpActivity and Start The Activity
             Intent intentSignUP = new Intent(getApplicationContext(), RegisterActivity.class);
             startActivity(intentSignUP);
-            finish();
         }
     }
 
 
 }
+
 
