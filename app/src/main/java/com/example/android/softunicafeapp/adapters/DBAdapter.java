@@ -1,3 +1,4 @@
+/*
 package com.example.android.softunicafeapp.adapters;
 
 import android.app.Activity;
@@ -155,3 +156,4 @@ public class DBAdapter {
 
 
 }
+*/
