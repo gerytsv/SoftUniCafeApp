@@ -12,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.android.softunicafeapp.R;
 import com.example.android.softunicafeapp.adapters.CategoriesAdapter;
@@ -28,6 +27,7 @@ import java.util.ArrayList;
 
 public class CategoriesActivity extends AppCompatActivity implements CategoriesAdapter.ClickListener {
 
+    public static int pos;
     private RecyclerView recView;
     private CategoriesAdapter adapter;
     private CategoriesAdapter.ClickListener clickListener;
@@ -43,6 +43,11 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesA
         setContentView(R.layout.activity_categories);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Categories");
+
+        // because the index of the categories starts at zero
+        // so category one will be zero and the pos shouldn't be considered to point at category one for default
+        pos = -1;
 
         final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
 
@@ -65,9 +70,9 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesA
         };
 
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Orders");
+        //mDatabase = FirebaseDatabase.getInstance().getReference().child("Orders");
         mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users");
-        mDatabase.keepSynced(true);
+        //mDatabase.keepSynced(true);
         mDatabaseUsers.keepSynced(true);
 
         recView = (RecyclerView) findViewById(R.id.recycler_list);
@@ -86,7 +91,7 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesA
                 startActivity(intent);
             }
         });
-*/
+    */
         checkIfUserExists();
 
     }
@@ -125,6 +130,7 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesA
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+        pos = -1;
     }
 
     @Override
@@ -139,6 +145,7 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesA
         if (item.getItemId() == R.id.action_logout) {
             mAuth.signOut();
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -149,14 +156,26 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesA
         //maybe if I leave it blank it should disable the back button (a.k.a. do the same as the code below)
         Intent setupIntent = new Intent(getApplicationContext(), CategoriesActivity.class);
         startActivity(setupIntent);
+        pos = -1;
     }
 
 
     @Override
     public void itemClicked(View view, int position) {
+        if (position == 0) {
+            startActivity(new Intent(this, ProductsActivity.class));
+            pos = 0;
+        }
         if (position == 1) {
             startActivity(new Intent(this, ProductsActivity.class));
-        } else Toast.makeText(this, "Still doesnt have activity", Toast.LENGTH_SHORT).show();
+            pos = 1;
+        }
+        if (position == 2) {
+            startActivity(new Intent(this, ProductsActivity.class));
+            pos = 2;
+        }
+
+        //else Toast.makeText(this, "Still doesnt have activity", Toast.LENGTH_SHORT).show();
 
     }
 }

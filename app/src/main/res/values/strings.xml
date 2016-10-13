@@ -24,4 +24,9 @@
     <string name="action_settings">Settings</string>
     <string name="action_orders">My orders</string>
     <string name="action_about">About us</string>
+    <string name="app_desc">This is the menu of the code cafe in the Software University in Sofia.</string>
+    <string name="softUni_address">
+        Tintyava 15-17, 2nd floor, Sofia 1113, Bulgaria.
+    </string>
+    <string name="softUni_timeOpen">10:00 - 22:00 everyday</string>
 </resources>

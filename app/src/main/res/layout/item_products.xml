@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:text="Item's title"
+            android:textColor="@color/colorMainOrange"
             android:textSize="25sp"
             android:textStyle="bold" />
 

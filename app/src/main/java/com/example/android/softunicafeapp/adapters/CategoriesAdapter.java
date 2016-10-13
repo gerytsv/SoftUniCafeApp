@@ -22,15 +22,6 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     //private ItemClickCallback itemClickCallback;
     private Context context;
 
-    /*
-        public interface ItemClickCallback {
-            void onItemClick(int p);
-        }
-
-        public void setItemClickCallback(final ItemClickCallback itemClickCallback){
-            this.itemClickCallback = itemClickCallback;
-        }
-    */
     public CategoriesAdapter(List<ListItem> listData, Context context) {
         this.context = context;
         inflater = LayoutInflater.from(context);
@@ -85,11 +76,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
 
         @Override
         public void onClick(View v) {
-            /*
-            if(v.getId() == R.id.item_container){
-                itemClickCallback.onItemClick(getAdapterPosition());
-            }*/
-            //context.startActivity(new Intent(context, ProductsActivity.class));
+
             if (clickListener != null) {
                 clickListener.itemClicked(v, getAdapterPosition()); // NOT SURE. it should be getPosition but method is deprecated
             }

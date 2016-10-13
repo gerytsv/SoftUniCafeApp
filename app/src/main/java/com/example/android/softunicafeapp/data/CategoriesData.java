@@ -1,27 +1,27 @@
 package com.example.android.softunicafeapp.data;
 
 
+import com.example.android.softunicafeapp.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class CategoriesData {
 
-    private static final int[] images = {android.R.drawable.ic_menu_call, android.R.drawable.ic_menu_add,
-            android.R.drawable.ic_menu_delete}; //TO DO: change these pics with the real ones for the categories
-
+    private static final int[] images = {
+            R.drawable.categorycoffee,
+            R.drawable.categorysandwiches,
+            R.drawable.bagguettescategory
+    };
     private static final String[] titles = {
             "Hot drinks",
             "Sandwiches",
-            "Baguettes",
-            "other drinks",
-
+            "Baguettes"
     };
     private static final String[] subTitles = {
             "Yes, coffee!",
             "Warm me up for Code!",
-            "Hot n cheesy",
-            "Know how to refresh!",
-
+            "Hot n cheesy"
     };
 
     public static List<ListItem> getListData() {
@@ -35,6 +35,7 @@ public class CategoriesData {
                 ListItem item = new ListItem();
                 item.setTitle(titles[i]);
                 item.setSubTitle(subTitles[i]);
+                item.setImageResId(images[i]);
                 data.add(item);
             }
 
