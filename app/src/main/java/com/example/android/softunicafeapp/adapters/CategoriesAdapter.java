@@ -18,9 +18,22 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
 
     private List<ListItem> listData;
     private LayoutInflater inflater;
+    private ClickListener clickListener;
+    //private ItemClickCallback itemClickCallback;
+    private Context context;
 
-    public CategoriesAdapter(List<ListItem> listData, Context c) {
-        inflater = LayoutInflater.from(c);
+    /*
+        public interface ItemClickCallback {
+            void onItemClick(int p);
+        }
+
+        public void setItemClickCallback(final ItemClickCallback itemClickCallback){
+            this.itemClickCallback = itemClickCallback;
+        }
+    */
+    public CategoriesAdapter(List<ListItem> listData, Context context) {
+        this.context = context;
+        inflater = LayoutInflater.from(context);
         this.listData = listData;
     }
 
@@ -34,7 +47,13 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     public void onBindViewHolder(CategoriesAdapter.CategoriesHolder holder, int position) {
         ListItem item = listData.get(position);
         holder.title.setText(item.getTitle());
+        holder.subTitle.setText(item.getSubTitle());
         holder.image.setImageResource(item.getImageResId());
+
+    }
+
+    public void setClickListener(ClickListener clickListener) {
+        this.clickListener = clickListener;
     }
 
     @Override
@@ -42,19 +61,40 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         return listData.size();
     }
 
-    class CategoriesHolder extends RecyclerView.ViewHolder {
+    public interface ClickListener {
+        public void itemClicked(View view, int position);
+
+    }
+
+    class CategoriesHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView title;
+        private TextView subTitle;
         private ImageView image;
         private View container;
 
         public CategoriesHolder(View itemView) {
             super(itemView);
-
-            title = (TextView) itemView.findViewById(R.id.item_text);
+            itemView.setOnClickListener(this);
+            title = (TextView) itemView.findViewById(R.id.item_text_title);
+            subTitle = (TextView) itemView.findViewById(R.id.item_text_subTitle);
             image = (ImageView) itemView.findViewById(R.id.item_image);
             container = itemView.findViewById(R.id.item_container);
+            container.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            /*
+            if(v.getId() == R.id.item_container){
+                itemClickCallback.onItemClick(getAdapterPosition());
+            }*/
+            //context.startActivity(new Intent(context, ProductsActivity.class));
+            if (clickListener != null) {
+                clickListener.itemClicked(v, getAdapterPosition()); // NOT SURE. it should be getPosition but method is deprecated
+            }
         }
     }
+
 }
 

@@ -38,21 +38,6 @@ public class ProductsActivity extends AppCompatActivity {
         }
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Products");
-        // setting the reference(url) to the d
-        /*DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://cafe-22cef.firebaseio.com/");
-
-        final FirebaseListAdapter<String> firebaseListAdapter = new FirebaseListAdapter<String>(
-                this,
-                String.class,
-                android.R.layout.simple_list_item_1,
-                databaseReference) {
-            @Override
-            protected void populateView(View v, String model, int position) {
-
-                TextView textView = (TextView) findViewById(android.R.id.text1);
-                textView.setText(model);
-            }
-        }; */
 
         mProductsList = (RecyclerView) findViewById(R.id.recyclerView_products);
         mProductsList.setHasFixedSize(true);

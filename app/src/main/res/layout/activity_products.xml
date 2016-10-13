@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     tools:context="com.example.android.softunicafeapp.activities.ProductsActivity">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/foodbackground" />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView_products"
         android:layout_width="match_parent"

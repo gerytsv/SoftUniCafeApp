@@ -79,7 +79,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
             Toast.makeText(LoginActivity.this, "Field vacant!", Toast.LENGTH_SHORT).show();
         } else {
-            mProgress.setMessage("Signing in...");
+            mProgress.setMessage("Checking user...");
             mProgress.show();
 
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {

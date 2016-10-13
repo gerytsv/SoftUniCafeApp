@@ -1,9 +1,10 @@
 package com.example.android.softunicafeapp.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.android.softunicafeapp.R;
 import com.example.android.softunicafeapp.adapters.CategoriesAdapter;
@@ -22,10 +24,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class CategoriesActivity extends AppCompatActivity implements View.OnClickListener {
+import java.util.ArrayList;
+
+public class CategoriesActivity extends AppCompatActivity implements CategoriesAdapter.ClickListener {
 
     private RecyclerView recView;
     private CategoriesAdapter adapter;
+    private CategoriesAdapter.ClickListener clickListener;
+    private ArrayList listData;
     private DatabaseReference mDatabase;
     private DatabaseReference mDatabaseUsers;
     private FirebaseAuth mAuth;
@@ -37,6 +43,15 @@ public class CategoriesActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_categories);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+
+        collapsingToolbarLayout.setTitle("");
+        collapsingToolbarLayout.setExpandedTitleColor(Color.parseColor("#00000000")); // transparent color = #00000000
+        collapsingToolbarLayout.setStatusBarScrimColor(Color.parseColor("#00000000"));
+        collapsingToolbarLayout.setCollapsedTitleTextColor(Color.rgb(255, 255, 255)); //Color of your title
+
+        listData = (ArrayList) CategoriesData.getListData();
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -58,10 +73,12 @@ public class CategoriesActivity extends AppCompatActivity implements View.OnClic
         recView = (RecyclerView) findViewById(R.id.recycler_list);
         recView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new CategoriesAdapter(CategoriesData.getListData(), this);
+        adapter = new CategoriesAdapter(listData, this);
         recView.setAdapter(adapter);
+        adapter.setClickListener(this);
+        //adapter.setItemClickCallback(this);
 
-        FloatingActionButton ordersFab = (FloatingActionButton) findViewById(R.id.orders_fab);
+     /*   FloatingActionButton ordersFab = (FloatingActionButton) findViewById(R.id.orders_fab);
         ordersFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,11 +86,18 @@ public class CategoriesActivity extends AppCompatActivity implements View.OnClic
                 startActivity(intent);
             }
         });
-
+*/
         checkIfUserExists();
 
     }
 
+    /*
+        @Override
+        public void onItemClick(int p) {
+            ListItem item = (ListItem) listData.get(p);
+            //intent here probably
+        }
+    */
     private void checkIfUserExists() {
         if (mAuth.getCurrentUser() != null) {
             final String user_id = mAuth.getCurrentUser().getUid();
@@ -95,11 +119,6 @@ public class CategoriesActivity extends AppCompatActivity implements View.OnClic
                 }
             });
         }
-    }
-
-    @Override
-    public void onClick(View v) {
-
     }
 
     @Override
@@ -130,5 +149,14 @@ public class CategoriesActivity extends AppCompatActivity implements View.OnClic
         //maybe if I leave it blank it should disable the back button (a.k.a. do the same as the code below)
         Intent setupIntent = new Intent(getApplicationContext(), CategoriesActivity.class);
         startActivity(setupIntent);
+    }
+
+
+    @Override
+    public void itemClicked(View view, int position) {
+        if (position == 1) {
+            startActivity(new Intent(this, ProductsActivity.class));
+        } else Toast.makeText(this, "Still doesnt have activity", Toast.LENGTH_SHORT).show();
+
     }
 }
