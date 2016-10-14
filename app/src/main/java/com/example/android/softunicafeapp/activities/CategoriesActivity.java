@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.android.softunicafeapp.R;
 import com.example.android.softunicafeapp.adapters.CategoriesAdapter;
@@ -41,9 +42,12 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setBackgroundResource(Color.TRANSPARENT);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Categories");
+
 
         // because the index of the categories starts at zero
         // so category one will be zero and the pos shouldn't be considered to point at category one for default
@@ -54,7 +58,7 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesA
         collapsingToolbarLayout.setTitle("");
         collapsingToolbarLayout.setExpandedTitleColor(Color.parseColor("#00000000")); // transparent color = #00000000
         collapsingToolbarLayout.setStatusBarScrimColor(Color.parseColor("#00000000"));
-        collapsingToolbarLayout.setCollapsedTitleTextColor(Color.rgb(255, 255, 255)); //Color of your title
+        collapsingToolbarLayout.setCollapsedTitleTextColor(Color.rgb(0, 0, 0)); //Color of your title
 
         listData = (ArrayList) CategoriesData.getListData();
 
@@ -65,6 +69,7 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesA
                 if (firebaseAuth.getCurrentUser() == null) {
                     Intent intent = new Intent(CategoriesActivity.this, LoginActivity.class);
                     startActivity(intent);
+                    Toast.makeText(getApplicationContext(), "Auth state changed.", Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -81,7 +86,6 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesA
         adapter = new CategoriesAdapter(listData, this);
         recView.setAdapter(adapter);
         adapter.setClickListener(this);
-        //adapter.setItemClickCallback(this);
 
      /*   FloatingActionButton ordersFab = (FloatingActionButton) findViewById(R.id.orders_fab);
         ordersFab.setOnClickListener(new View.OnClickListener() {
@@ -96,13 +100,6 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesA
 
     }
 
-    /*
-        @Override
-        public void onItemClick(int p) {
-            ListItem item = (ListItem) listData.get(p);
-            //intent here probably
-        }
-    */
     private void checkIfUserExists() {
         if (mAuth.getCurrentUser() != null) {
             final String user_id = mAuth.getCurrentUser().getUid();
@@ -112,8 +109,8 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesA
 
                     if (!dataSnapshot.hasChild(user_id)) {
 
-                        Intent setupIntent = new Intent(CategoriesActivity.this, RegisterActivity.class);
-                        startActivity(setupIntent);
+                        Intent intent = new Intent(CategoriesActivity.this, RegisterActivity.class);
+                        startActivity(intent);
 
                     }
                 }
@@ -153,7 +150,6 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesA
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        //maybe if I leave it blank it should disable the back button (a.k.a. do the same as the code below)
         Intent setupIntent = new Intent(getApplicationContext(), CategoriesActivity.class);
         startActivity(setupIntent);
         pos = -1;
@@ -162,6 +158,8 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesA
 
     @Override
     public void itemClicked(View view, int position) {
+
+
         if (position == 0) {
             startActivity(new Intent(this, ProductsActivity.class));
             pos = 0;
@@ -175,7 +173,7 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesA
             pos = 2;
         }
 
-        //else Toast.makeText(this, "Still doesnt have activity", Toast.LENGTH_SHORT).show();
+        //else Toast.makeText(this, "Still doesn't have activity", Toast.LENGTH_SHORT).show();
 
     }
 }

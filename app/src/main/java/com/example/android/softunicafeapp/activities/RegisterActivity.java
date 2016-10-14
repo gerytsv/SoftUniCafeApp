@@ -14,6 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.softunicafeapp.R;
+import com.firebase.client.AuthData;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -28,10 +31,38 @@ import static com.example.android.softunicafeapp.R.string.error_invalid_password
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     EditText editTextUserName, editTextUserSurName, editTextUserPhone, editTextUserEmail, editTextUserPassword;
+    ;
     Button btnRegister;
     TextView loginTextView;
     Context context = this;
-    //DBAdapter db;
+    Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
+        @Override
+        public void onAuthenticated(AuthData authData) {
+            // Authenticated successfully with payload authData
+        }
+
+        @Override
+        public void onAuthenticationError(FirebaseError error) {
+            // Something went wrong :(
+            switch (error.getCode()) {
+                case FirebaseError.EMAIL_TAKEN:
+                    Toast.makeText(RegisterActivity.this, "This email is taken!", Toast.LENGTH_SHORT).show();
+                    break;
+                case FirebaseError.INVALID_AUTH_ARGUMENTS:
+                    Toast.makeText(RegisterActivity.this, "Invalid authenticatio arguments!", Toast.LENGTH_SHORT).show();
+                    break;
+                case FirebaseError.INVALID_EMAIL:
+                    Toast.makeText(RegisterActivity.this, "Invalid email!", Toast.LENGTH_SHORT).show();
+                    break;
+                case FirebaseError.NETWORK_ERROR:
+                    Toast.makeText(RegisterActivity.this, "Network error occurred", Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    Toast.makeText(RegisterActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
     private FirebaseAuth mAuth;
     private ProgressDialog mProgress;
     private DatabaseReference mDatabase;
@@ -40,8 +71,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
-        //db = new DBAdapter(RegisterActivity.this);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -59,6 +88,31 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         loginTextView = (TextView) findViewById(R.id.login_textView);
         loginTextView.setOnClickListener(this);
 
+/*
+            //setting errors
+            if (TextUtils.isEmpty(editTextUserEmail.getText().toString()))
+                editTextUserEmail.setError(getString(error_field_required));
+            else editTextUserEmail.setError(null);
+            if (TextUtils.isEmpty(editTextUserPassword.getText().toString()))
+                editTextUserPassword.setError(getString(error_field_required));
+            else editTextUserPassword.setError(null);
+            if (TextUtils.isEmpty(editTextUserSurName.getText().toString()))
+                editTextUserSurName.setError(getString(error_field_required));
+            else editTextUserSurName.setError(null);
+            if (TextUtils.isEmpty(editTextUserName.getText().toString()))
+                editTextUserName.setError(getString(error_field_required));
+            else editTextUserName.setError(null);
+            if (TextUtils.isEmpty(editTextUserPhone.getText().toString()))
+                editTextUserPhone.setError(getString(error_field_required));
+            else editTextUserPhone.setError(null);
+            if (!TextUtils.isEmpty(editTextUserPassword.getText().toString()) && editTextUserPassword.getText().toString().length() < 4)
+                editTextUserPassword.setError(getString(error_invalid_password));
+            else editTextUserPassword.setError(null);
+            if (!editTextUserEmail.getText().toString().contains("@"))
+                editTextUserEmail.setError(getString(error_invalid_email));
+            else editTextUserEmail.setError(null);
+         */
+
     }
 
     public void onSignUpClick(View v) {
@@ -71,13 +125,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         final String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         boolean isCorrect = false;
-
-        /* Reset errors.
-        editTextUserEmail.setError(null);
-        editTextUserPassword.setError(null);
-        editTextUserSurName.setError(null);
-        editTextUserName.setError(null);
-        editTextUserPhone.setError(null); */
 
         //setting errors
         if (TextUtils.isEmpty(email)) editTextUserEmail.setError(getString(error_field_required));
@@ -97,19 +144,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         else editTextUserPassword.setError(null);
         if (!email.contains("@")) editTextUserEmail.setError(getString(error_invalid_email));
         else editTextUserEmail.setError(null);
-        /*if (!isValidEmail(email) && !TextUtils.isEmpty(email)) editTextUserEmail.setError(getString(error_invalid_email));
 
-        if (!email.matches(emailPattern) && !TextUtils.isEmpty(email))
-            editTextUserEmail.setError(getString(error_invalid_email));
-        else editTextUserEmail.setError(null);
-
-        isCorrect = emailPattern.matches(email);
-        if(isCorrect) {
-            editTextUserEmail.setError(null);
-        }
-            else { editTextUserEmail.setError(getString(error_invalid_email)); }
-        */
-
+        /* Reset errors.
+        editTextUserEmail.setError(null);
+        editTextUserPassword.setError(null);
+        editTextUserSurName.setError(null);
+        editTextUserName.setError(null);
+        editTextUserPhone.setError(null); */
 
         if (!TextUtils.isEmpty(email) &&
                 !TextUtils.isEmpty(password) &&
@@ -117,7 +158,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 !TextUtils.isEmpty(surName) &&
                 !TextUtils.isEmpty(phone) &&
                 password.length() > 4 &&
-                email.contains("@")) { //isValidEmail(email)   ;   email.matches(emailPattern)
+                email.contains("@"))        //isValidEmail(email);   email.matches(emailPattern)
+        {
             mProgress.setMessage("Signing Up ...");
             mProgress.show();
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -131,15 +173,34 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         current_user_db.child("phone").setValue(phone);
 
                         mProgress.dismiss();
-                        Toast.makeText(RegisterActivity.this, "Account created!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "Account created! Please wait...", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(RegisterActivity.this, CategoriesActivity.class);
                         startActivity(intent);
+                    } else {
+                        Toast.makeText(RegisterActivity.this, "Problem with registration", Toast.LENGTH_SHORT).show();
+                        mProgress.dismiss();
                     }
                 }
             });
-
         }
+
+
+        /*if (!isValidEmail(email) && !TextUtils.isEmpty(email)) editTextUserEmail.setError(getString(error_invalid_email));
+
+        if (!email.matches(emailPattern) && !TextUtils.isEmpty(email))
+            editTextUserEmail.setError(getString(error_invalid_email));
+        else editTextUserEmail.setError(null);
+
+        isCorrect = emailPattern.matches(email);
+        if(isCorrect) {
+            editTextUserEmail.setError(null);
+        }
+            else { editTextUserEmail.setError(getString(error_invalid_email)); }
+        */
+
     }
+
+
 
     /* validating email id
     private boolean isValidEmail(String email) {
@@ -159,6 +220,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             startActivity(intentLogin);
         }
     }
+
+    public static interface AuthResultHandler {
+
+    }
+
 }
 
 

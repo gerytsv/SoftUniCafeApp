@@ -2,6 +2,7 @@ package com.example.android.softunicafeapp.adapters;
 
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +41,15 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         holder.title.setText(item.getTitle());
         holder.subTitle.setText(item.getSubTitle());
         holder.image.setImageResource(item.getImageResId());
+        if (position == 0) {
+            holder.container.setBackgroundColor(ContextCompat.getColor(context, R.color.colorCategoryOne));
+        }
+        if (position == 1) {
+            holder.container.setBackgroundColor(ContextCompat.getColor(context, R.color.colorCategoryTwo));
+        }
+        if (position == 2) {
+            holder.container.setBackgroundColor(ContextCompat.getColor(context, R.color.colorCategoryThree));
+        }
 
     }
 
@@ -78,7 +88,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         public void onClick(View v) {
 
             if (clickListener != null) {
-                clickListener.itemClicked(v, getAdapterPosition()); // NOT SURE. it should be getPosition but method is deprecated
+                clickListener.itemClicked(v, getAdapterPosition()); // getPosition method is deprecated
             }
         }
     }

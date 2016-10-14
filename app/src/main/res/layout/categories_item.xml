@@ -3,14 +3,16 @@
     android:id="@+id/item_container"
     android:layout_width="match_parent"
     android:layout_height="200dp"
+    android:layout_marginBottom="2dp"
     android:background="@color/colorPrimaryDark"
     android:clickable="true"
     android:orientation="horizontal">
 
+
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.7"
+        android:layout_weight="0.6"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -18,25 +20,36 @@
             android:id="@+id/item_text_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_gravity="center"
+            android:shadowColor="#562200"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"
             android:text="Test"
             android:textColor="@android:color/white"
-            android:textSize="50sp" />
+            android:textSize="32sp" />
 
         <TextView
             android:id="@+id/item_text_subTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="25dp"
+            android:shadowColor="#562200"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"
             android:text="Test"
-            android:textColor="@color/colorAccent"
-            android:textSize="30sp" />
+            android:textColor="@color/colorSubtitle"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.3"
+        android:layout_weight="0.4"
         android:gravity="right">
 
         <ImageView
@@ -44,8 +57,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="right"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_launcher" />
     </LinearLayout>
+
 
 </LinearLayout>

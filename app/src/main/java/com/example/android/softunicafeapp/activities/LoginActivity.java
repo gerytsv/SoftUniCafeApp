@@ -2,6 +2,7 @@ package com.example.android.softunicafeapp.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,6 +47,12 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabaseUsers;
 
+    //method for removing the focus from the edit texts
+    public static void hideSoftKeyboard(Activity activity, View view) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +81,10 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     }
 
     public void onSignInClick(View v) {
+
+        //removing the focus from the edit texts
+        hideSoftKeyboard(LoginActivity.this, v);
+
         String email = mLoginEmail.getText().toString();
         String password = mLoginPassword.getText().toString();
 
@@ -141,27 +153,12 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     @Override public boolean onCreateOptionsMenu(Menu menu) {
-     getMenuInflater().inflate(R.menu.menu_main, menu);
-     return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
-
-    if(item.getItemId() == R.id.action_logout){
-    mAuth.signOut();
-    }
-    return super.onOptionsItemSelected(item);
-    } */
-
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
         Window window = getWindow();
         window.setFormat(PixelFormat.RGBA_8888);
     }
-
 
     @Override
     public void onClick(View v) {
@@ -173,7 +170,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             startActivity(intentSignUP);
         }
     }
-
 
 }
 

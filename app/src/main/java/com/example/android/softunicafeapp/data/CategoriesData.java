@@ -9,9 +9,9 @@ import java.util.List;
 public class CategoriesData {
 
     private static final int[] images = {
-            R.drawable.categorycoffee,
-            R.drawable.categorysandwiches,
-            R.drawable.bagguettescategory
+            R.drawable.coffee,
+            R.drawable.sandwich,
+            R.drawable.baguette
     };
     private static final String[] titles = {
             "Hot drinks",
